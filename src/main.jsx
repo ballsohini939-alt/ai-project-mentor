@@ -5,6 +5,7 @@ import App from "./App.jsx";
 
 import "./index.css";
 import "./app.css";
+import "./ui-overrides.css";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

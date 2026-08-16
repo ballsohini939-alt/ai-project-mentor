@@ -107,11 +107,26 @@ function App() {
   // APP STATE
   // =====================================================
 
-  const [project, setProject] =
-    useState(loadSavedProject);
+  
+    const [project, setProject] =
+  useState(loadSavedProject);
 
-  const [currentPage, setCurrentPage] =
-    useState(loadSavedPage);
+const [currentPage, setCurrentPage] =
+  useState(() => {
+    const isExistingSession =
+      sessionStorage.getItem("ai-project-session");
+
+    if (!isExistingSession) {
+      sessionStorage.setItem(
+        "ai-project-session",
+        "active"
+      );
+
+      return "home";
+    }
+
+    return loadSavedPage();
+  });
 
   // =====================================================
   // SAVE CURRENT PAGE
