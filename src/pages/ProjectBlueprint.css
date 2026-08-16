@@ -470,3 +470,144 @@
     width: 100%;
   }
 }
+
+/* =========================================================
+   SOFT LAVENDER BLUEPRINT THEME
+   UI ONLY — DOES NOT CHANGE FUNCTIONALITY
+========================================================= */
+
+/* Main blueprint page */
+.blueprint-page {
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(224, 207, 255, 0.55),
+      transparent 45%
+    ),
+    linear-gradient(
+      180deg,
+      #f7f1ff 0%,
+      #fbf8ff 45%,
+      #f5efff 100%
+    );
+}
+
+/* Main cards */
+.blueprint-card {
+  background: rgba(252, 249, 255, 0.96);
+  border: 1px solid #e5d8f8;
+  box-shadow:
+    0 18px 50px rgba(111, 76, 160, 0.10);
+}
+
+/* Project overview card */
+.project-overview {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(246, 238, 255, 0.98),
+      rgba(253, 250, 255, 0.98)
+    );
+}
+
+/* Small icon boxes */
+.blueprint-icon,
+.no-blueprint-icon {
+  background: linear-gradient(
+    135deg,
+    #eee3ff,
+    #e3d4ff
+  );
+  border: 1px solid #ddcbff;
+}
+
+/* Project tags */
+.project-tags span {
+  background: #eee4ff;
+  border: 1px solid #dfcfff;
+  color: #6346d8;
+}
+
+/* User tags */
+.user-tags span {
+  background: #f8f3ff;
+  border: 1px solid #e4d8f5;
+}
+
+/* Feature numbers */
+.feature-number {
+  background: #eee4ff;
+  color: #6847df;
+  border: 1px solid #dfcfff;
+}
+
+/* Feature separators */
+.feature-item {
+  border-bottom-color: #e9def4;
+}
+
+/* Technology groups */
+.tech-group {
+  background: #f8f3ff;
+  border: 1px solid #e4d8f5;
+}
+
+/* Technology pills */
+.tech-items span {
+  background: #eee5ff;
+  border: 1px solid #dfd0f7;
+  color: #6044d0;
+}
+
+/* Roadmap connector */
+.roadmap-item:not(:last-child)::before {
+  background: #d9c8ed;
+}
+
+/* Roadmap numbers */
+.roadmap-number {
+  background: linear-gradient(
+    135deg,
+    #8d5cf5,
+    #7040dc
+  );
+}
+
+/* Insights */
+.insight-item {
+  border-bottom-color: #e9def4;
+}
+
+/* Header badge */
+.blueprint-badge {
+  background: #eee4ff;
+  border: 1px solid #dfcfff;
+}
+
+/* Button */
+.blueprint-button {
+  background: linear-gradient(
+    135deg,
+    #9259f5,
+    #7138dd
+  );
+  box-shadow:
+    0 10px 30px rgba(112, 64, 220, 0.18);
+}
+
+/* No blueprint screen */
+.no-blueprint {
+  background: rgba(252, 249, 255, 0.97);
+  border: 1px solid #e4d8f5;
+}
+
+/* Smooth visual transition */
+.blueprint-page,
+.blueprint-card,
+.tech-group,
+.no-blueprint {
+  transition:
+    background 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}

@@ -324,182 +324,242 @@ const [currentPage, setCurrentPage] =
     setCurrentPage("mentor");
   };
 
-  // =====================================================
-  // HOME PAGE
-  // =====================================================
+// =====================================================
+// HOME PAGE — LIGHT FUTURISTIC REDESIGN
+// =====================================================
 
-  if (currentPage === "home") {
-    return (
-      <div className="app">
+if (currentPage === "home") {
+  return (
+    <div className="home-redesign">
 
-        {/* =================================================
-            NAVBAR
-        ================================================= */}
+      {/* =================================================
+          NAVIGATION
+      ================================================= */}
 
-        <nav className="navbar">
+      <nav className="home-nav">
 
-          <div
-            className="logo"
-            onClick={handleGoHome}
-            style={{
-              cursor: "pointer",
-            }}
+        <div
+          className="home-brand"
+          onClick={handleGoHome}
+          role="button"
+          tabIndex={0}
+        >
+          <div className="home-brand-icon">
+            ✦
+          </div>
+
+          <span>AI Project Mentor</span>
+        </div>
+
+        <div className="home-nav-links">
+
+          <a href="#features">
+            Features
+          </a>
+
+          <a href="#how-it-works">
+            How it works
+          </a>
+
+          <button
+            type="button"
+            className="home-nav-button"
+            onClick={openBuilder}
           >
+            Start Building ✦
+          </button>
 
-            <div className="logo-icon">
-              ✦
+        </div>
+
+      </nav>
+
+
+      {/* =================================================
+          HERO
+      ================================================= */}
+
+      <main>
+
+        <section className="home-hero">
+
+          {/* Decorative background elements */}
+
+          <div className="hero-orb hero-orb-left" />
+          <div className="hero-orb hero-orb-right" />
+          <div className="hero-glow hero-glow-one" />
+          <div className="hero-glow hero-glow-two" />
+
+          <div className="hero-dots hero-dots-left">
+            {Array.from({ length: 36 }).map((_, index) => (
+              <span key={index} />
+            ))}
+          </div>
+
+          <div className="hero-dots hero-dots-right">
+            {Array.from({ length: 36 }).map((_, index) => (
+              <span key={index} />
+            ))}
+          </div>
+
+
+          {/* HERO CONTENT */}
+
+          <div className="home-hero-content">
+
+            <div className="home-eyebrow">
+              <span className="eyebrow-dot" />
+              AI-POWERED PROJECT MENTOR
             </div>
 
-            <span>
-              AI Project Mentor
-            </span>
+            <h1>
+              Turn your idea into
+              <span>
+                a real project.
+              </span>
+            </h1>
+
+            <p>
+              Build better projects with an AI mentor
+              that helps you plan, understand, build,
+              and track your progress.
+            </p>
+
+            <div className="home-hero-buttons">
+
+              <button
+                type="button"
+                className="home-primary-button"
+                onClick={openBuilder}
+              >
+                Start Building ✦
+              </button>
+
+              <a
+                href="#how-it-works"
+                className="home-secondary-button"
+              >
+                <span>▷</span>
+                See How It Works
+              </a>
+
+            </div>
 
           </div>
 
-          <div className="nav-links">
 
-            <a href="#features">
-              Features
-            </a>
+          {/* =================================================
+              THREE STEP PROCESS
+          ================================================= */}
 
-            <a href="#how-it-works">
-              How it works
-            </a>
+          <div className="home-process">
 
-            <button
-              type="button"
-              className="nav-button"
-              onClick={openBuilder}
-            >
-              Start Building
-            </button>
+            <div className="home-process-step">
 
-          </div>
+              <div className="process-icon">
+                ✎
+              </div>
 
-        </nav>
+              <strong>01</strong>
 
-        {/* =================================================
-            HERO
-        ================================================= */}
-
-        <main>
-
-          <section className="hero">
-
-            <div className="hero-content">
-
-              <span className="badge">
-                ✦ AI-POWERED PROJECT MENTOR
+              <span>
+                Enter your idea
               </span>
 
-              <h1>
-                Turn your idea into
-                <span>
-                  a real project.
-                </span>
-              </h1>
+            </div>
 
-              <p className="hero-description">
-                Build better projects with an AI
-                mentor that helps you plan,
-                understand, build, and track your
-                progress.
-              </p>
 
-              <div className="hero-buttons">
+            <div className="process-line" />
 
-                <button
-                  type="button"
-                  className="primary-button"
-                  onClick={openBuilder}
-                >
-                  Start Building ✦
-                </button>
 
-                <a
-                  href="#how-it-works"
-                  className="secondary-button"
-                >
-                  See How It Works
-                </a>
+            <div className="home-process-step">
 
+              <div className="process-icon">
+                ◫
               </div>
 
-              <div className="hero-stats">
+              <strong>02</strong>
 
-                <div>
-                  <strong>01</strong>
-
-                  <span>
-                    Enter your idea
-                  </span>
-                </div>
-
-                <div>
-                  <strong>02</strong>
-
-                  <span>
-                    Get your blueprint
-                  </span>
-                </div>
-
-                <div>
-                  <strong>03</strong>
-
-                  <span>
-                    Start building
-                  </span>
-                </div>
-
-              </div>
+              <span>
+                Get your blueprint
+              </span>
 
             </div>
 
-            {/* =================================================
-                AI PREVIEW
-            ================================================= */}
 
-            <div className="mentor-preview">
+            <div className="process-line" />
 
-              <div className="preview-header">
 
-                <span>
+            <div className="home-process-step">
 
-                  <span className="status-dot" />
+              <div className="process-icon">
+                🚀
+              </div>
 
-                  AI Project Mentor
+              <strong>03</strong>
 
-                </span>
+              <span>
+                Start building
+              </span>
 
-                <span className="preview-label">
+            </div>
+
+          </div>
+
+
+          {/* =================================================
+              AI MENTOR PREVIEW
+          ================================================= */}
+
+          <div className="home-preview-wrapper">
+
+            <div className="home-preview">
+
+              <div className="preview-top">
+
+                <div className="preview-title">
+
+                  <span className="preview-online-dot" />
+
+                  <span>
+                    AI Project Mentor
+                  </span>
+
+                </div>
+
+                <span className="preview-online">
+                  <span />
                   ONLINE
                 </span>
 
               </div>
 
-              <div className="preview-message">
 
-                <div className="ai-avatar">
+              <div className="preview-body">
+
+                <div className="preview-avatar">
                   🤖
                 </div>
 
-                <div>
+                <div className="preview-question">
 
-                  <small>
+                  <span>
                     AI Mentor
-                  </small>
+                  </span>
 
-                  <p>
+                  <strong>
                     What do you want to build?
-                  </p>
+                  </strong>
 
                 </div>
 
               </div>
 
-              <div className="idea-box">
 
-                💡
+              <div className="preview-input">
+
+                <span className="preview-bulb">
+                  💡
+                </span>
 
                 <span>
                   Describe your project idea...
@@ -507,9 +567,10 @@ const [currentPage, setCurrentPage] =
 
               </div>
 
+
               <button
                 type="button"
-                className="generate-button"
+                className="preview-generate"
                 onClick={openBuilder}
               >
                 Generate Project ✦
@@ -517,196 +578,217 @@ const [currentPage, setCurrentPage] =
 
             </div>
 
-          </section>
+          </div>
 
-          {/* =================================================
+        </section>
+
+
+        {/* =================================================
+            FEATURES
+        ================================================= */}
+
+        <section
+          className="home-features"
+          id="features"
+        >
+
+          <div className="home-section-heading">
+
+            <span>
               FEATURES
-          ================================================= */}
+            </span>
 
-          <section
-            className="features"
-            id="features"
-          >
+            <h2>
+              Everything you need to
+              <span>build better projects.</span>
+            </h2>
 
-            <div className="section-heading">
+            <p>
+              From your first idea to a working project,
+              your AI mentor guides you through every
+              important step.
+            </p>
 
-              <span>
-                FEATURES
-              </span>
+          </div>
 
-              <h2>
-                Everything you need to
-                build better projects.
-              </h2>
+
+          <div className="home-feature-grid">
+
+            <div className="home-feature-card">
+
+              <div className="home-feature-icon">
+                💡
+              </div>
+
+              <h3>
+                Project Ideas
+              </h3>
 
               <p>
-                From your first idea to a working
-                project, your AI mentor guides you
-                through every important step.
+                Turn simple ideas into structured
+                and practical project concepts.
               </p>
 
             </div>
 
-            <div className="feature-grid">
 
-              <div className="feature-card">
+            <div className="home-feature-card">
 
-                <div className="feature-icon">
-                  💡
-                </div>
-
-                <h3>
-                  Project Ideas
-                </h3>
-
-                <p>
-                  Turn simple ideas into structured
-                  and practical project concepts.
-                </p>
-
+              <div className="home-feature-icon">
+                🧩
               </div>
 
-              <div className="feature-card">
+              <h3>
+                Smart Blueprint
+              </h3>
 
-                <div className="feature-icon">
-                  🧩
-                </div>
-
-                <h3>
-                  Smart Blueprint
-                </h3>
-
-                <p>
-                  Get features, technology,
-                  roadmap, and development guidance.
-                </p>
-
-              </div>
-
-              <div className="feature-card">
-
-                <div className="feature-icon">
-                  🤖
-                </div>
-
-                <h3>
-                  AI Mentor
-                </h3>
-
-                <p>
-                  Ask questions and get help when
-                  you are stuck during development.
-                </p>
-
-              </div>
-
-              <div className="feature-card">
-
-                <div className="feature-icon">
-                  📊
-                </div>
-
-                <h3>
-                  Progress Tracking
-                </h3>
-
-                <p>
-                  Track completed roadmap phases
-                  and see your project progress.
-                </p>
-
-              </div>
+              <p>
+                Get features, technology, roadmap,
+                and development guidance.
+              </p>
 
             </div>
 
-          </section>
 
-          {/* =================================================
+            <div className="home-feature-card">
+
+              <div className="home-feature-icon">
+                🤖
+              </div>
+
+              <h3>
+                AI Mentor
+              </h3>
+
+              <p>
+                Ask questions and get help whenever
+                you are stuck during development.
+              </p>
+
+            </div>
+
+
+            <div className="home-feature-card">
+
+              <div className="home-feature-icon">
+                📊
+              </div>
+
+              <h3>
+                Progress Tracking
+              </h3>
+
+              <p>
+                Track roadmap phases and see how
+                your project is progressing.
+              </p>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        {/* =================================================
+            HOW IT WORKS
+        ================================================= */}
+
+        <section
+          className="home-how"
+          id="how-it-works"
+        >
+
+          <div className="home-section-heading">
+
+            <span>
               HOW IT WORKS
-          ================================================= */}
-
-          <section
-            className="how-it-works"
-            id="how-it-works"
-          >
-
-            <div className="section-heading">
-
-              <span>
-                HOW IT WORKS
-              </span>
-
-              <h2>
-                From idea to implementation.
-              </h2>
-
-            </div>
-
-            <div className="steps">
-
-              <div className="step">
-
-                <div className="step-number">
-                  01
-                </div>
-
-                <h3>
-                  Describe your idea
-                </h3>
-
-                <p>
-                  Tell the mentor what you want
-                  to build in your own words.
-                </p>
-
-              </div>
-
-              <div className="step">
-
-                <div className="step-number">
-                  02
-                </div>
-
-                <h3>
-                  Generate a blueprint
-                </h3>
-
-                <p>
-                  Get a structured plan with
-                  features, technology, and roadmap.
-                </p>
-
-              </div>
-
-              <div className="step">
-
-                <div className="step-number">
-                  03
-                </div>
-
-                <h3>
-                  Build and track
-                </h3>
-
-                <p>
-                  Follow the roadmap and track
-                  your progress as you build.
-                </p>
-
-              </div>
-
-            </div>
-
-          </section>
-
-          {/* =================================================
-              CTA
-          ================================================= */}
-
-          <section className="cta">
+            </span>
 
             <h2>
-              Ready to build?
+              From idea to implementation.
+            </h2>
+
+          </div>
+
+
+          <div className="home-how-grid">
+
+            <div className="home-how-card">
+
+              <div className="how-number">
+                01
+              </div>
+
+              <h3>
+                Describe your idea
+              </h3>
+
+              <p>
+                Tell the mentor what you want
+                to build in your own words.
+              </p>
+
+            </div>
+
+
+            <div className="home-how-card">
+
+              <div className="how-number">
+                02
+              </div>
+
+              <h3>
+                Generate a blueprint
+              </h3>
+
+              <p>
+                Get a structured plan with features,
+                technology, and a roadmap.
+              </p>
+
+            </div>
+
+
+            <div className="home-how-card">
+
+              <div className="how-number">
+                03
+              </div>
+
+              <h3>
+                Build and track
+              </h3>
+
+              <p>
+                Follow your roadmap and track
+                your progress as you build.
+              </p>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        {/* =================================================
+            FINAL CTA
+        ================================================= */}
+
+        <section className="home-cta">
+
+          <div className="cta-glow" />
+
+          <div className="cta-content">
+
+            <span>
+              READY TO BUILD?
+            </span>
+
+            <h2>
+              Turn your idea into
+              <strong>something real.</strong>
             </h2>
 
             <p>
@@ -716,35 +798,38 @@ const [currentPage, setCurrentPage] =
 
             <button
               type="button"
-              className="primary-button"
+              className="home-primary-button"
               onClick={openBuilder}
             >
               Start Building ✦
             </button>
 
-          </section>
+          </div>
 
-        </main>
+        </section>
 
-        {/* =================================================
-            FOOTER
-        ================================================= */}
+      </main>
 
-        <footer>
 
-          <p>
-            © 2026 AI Project Mentor
-          </p>
+      {/* =================================================
+          FOOTER
+      ================================================= */}
 
-          <p>
-            Build. Learn. Create.
-          </p>
+      <footer className="home-footer">
 
-        </footer>
+        <span>
+          © 2026 AI Project Mentor
+        </span>
 
-      </div>
-    );
-  }
+        <span>
+          Build. Learn. Create.
+        </span>
+
+      </footer>
+
+    </div>
+  );
+}
 
   // =====================================================
   // PROJECT BUILDER
