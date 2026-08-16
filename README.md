@@ -555,7 +555,7 @@ Open the address shown in your terminal.
 ### Landing Page
 The entry point — introduces the platform and starts the *Project Idea → Blueprint → Dashboard* journey.
 
-![Landing Page](https://raw.githubusercontent.com/ballsohini939-alt/ai-project-mentor/ui-redesign/LandingPage.png)
+![Landing Page](https://raw.githubusercontent.com/ballsohini939-alt/ai-project-mentor/ui-redesign/LandingPage.png.png)
 
 ### Project Builder
 Where users describe their idea, pick a category, and set their experience level.
