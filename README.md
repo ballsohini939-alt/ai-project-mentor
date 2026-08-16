@@ -560,27 +560,27 @@ The entry point — introduces the platform and starts the *Project Idea → Blu
 ### Project Builder
 Where users describe their idea, pick a category, and set their experience level.
 
-![Project Builder](ProjectBuilder.png)
+![Project Builder](https://raw.githubusercontent.com/ballsohini939-alt/ai-project-mentor/ui-redesign/ProjectBuilder.png.png)
 
 ### AI-Generated Blueprint — Development Roadmap
 The AI breaks the idea into a clear, numbered set of build phases.
 
-![AI Blueprint](AIBlueprint.png)
+![AI Blueprint](https://raw.githubusercontent.com/ballsohini939-alt/ai-project-mentor/ui-redesign/AIBlueprint.png.png)
 
 ### Project Dashboard
 The central workspace showing project overview, tags, and live progress.
 
-![Project Dashboard](ProjectDashboard.png)
+![Project Dashboard](https://raw.githubusercontent.com/ballsohini939-alt/ai-project-mentor/ui-redesign/ProjectDashboard.png.png)
 
 ### Phase Workspace
 Focused, checklist-driven views for working through the roadmap one phase at a time — including smart "what to do next" suggestions.
 
-![Phase Workspace](PhaseWorkspace.png)
+![Phase Workspace](https://raw.githubusercontent.com/ballsohini939-alt/ai-project-mentor/ui-redesign/PhaseWorkspace.png.png)
 
 ### AI Mentor
 The AI Mentor interface for project-aware development guidance.
 
-![AI Mentor](AIMentor.png)
+![AI Mentor](https://raw.githubusercontent.com/ballsohini939-alt/ai-project-mentor/ui-redesign/AIMentor.png.png)
 
 ---
 
