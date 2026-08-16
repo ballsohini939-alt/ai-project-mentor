@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import ProjectBuilder from "./pages/ProjectBuilder";
 import ProjectBlueprint from "./pages/ProjectBlueprint";
@@ -7,7 +7,7 @@ import AIMentor from "./pages/AIMentor";
 
 function App() {
   // =====================================================
-  // LOAD PROJECT FROM LOCAL STORAGE
+  // LOAD SAVED PROJECT
   // =====================================================
 
   const loadSavedProject = () => {
@@ -20,7 +20,9 @@ function App() {
         return null;
       }
 
-      return JSON.parse(savedProject);
+      const parsedProject = JSON.parse(savedProject);
+
+      return parsedProject;
     } catch (error) {
       console.error(
         "Failed to load saved project:",
@@ -32,17 +34,136 @@ function App() {
   };
 
   // =====================================================
-  // APP STATE
+  // LOAD SAVED PAGE
   // =====================================================
 
-  const [currentPage, setCurrentPage] =
-    useState("home");
+  const loadSavedPage = () => {
+    try {
+      const savedPage = localStorage.getItem(
+        "ai-project-page"
+      );
+
+      const savedProject =
+        localStorage.getItem(
+          "ai-project-current"
+        );
+
+      // -------------------------------------------------
+      // NO PROJECT
+      // -------------------------------------------------
+
+      if (!savedProject) {
+        return "home";
+      }
+
+      // -------------------------------------------------
+      // IMPORTANT:
+      // AI MENTOR IS PAUSED FOR NOW.
+      //
+      // If an old session saved "mentor",
+      // do NOT reopen it.
+      // Open the project dashboard instead.
+      // -------------------------------------------------
+
+      if (savedPage === "mentor") {
+        return "dashboard";
+      }
+
+      // -------------------------------------------------
+      // VALID PAGES
+      // -------------------------------------------------
+
+      const validPages = [
+        "home",
+        "builder",
+        "blueprint",
+        "dashboard",
+        "mentor",
+      ];
+
+      if (
+        savedPage &&
+        validPages.includes(savedPage)
+      ) {
+        return savedPage;
+      }
+
+      // -------------------------------------------------
+      // DEFAULT
+      // -------------------------------------------------
+
+      return "dashboard";
+    } catch (error) {
+      console.error(
+        "Failed to load saved page:",
+        error
+      );
+
+      return "home";
+    }
+  };
+
+  // =====================================================
+  // APP STATE
+  // =====================================================
 
   const [project, setProject] =
     useState(loadSavedProject);
 
+  const [currentPage, setCurrentPage] =
+    useState(loadSavedPage);
+
   // =====================================================
-  // OPEN PROJECT BUILDER
+  // SAVE CURRENT PAGE
+  // =====================================================
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(
+        "ai-project-page",
+        currentPage
+      );
+
+      console.log(
+        "Current page saved:",
+        currentPage
+      );
+    } catch (error) {
+      console.error(
+        "Failed to save current page:",
+        error
+      );
+    }
+  }, [currentPage]);
+
+  // =====================================================
+  // SAVE PROJECT
+  // =====================================================
+
+  useEffect(() => {
+    if (!project) {
+      return;
+    }
+
+    try {
+      localStorage.setItem(
+        "ai-project-current",
+        JSON.stringify(project)
+      );
+
+      console.log(
+        "Current project saved."
+      );
+    } catch (error) {
+      console.error(
+        "Failed to save project:",
+        error
+      );
+    }
+  }, [project]);
+
+  // =====================================================
+  // OPEN BUILDER
   // =====================================================
 
   const openBuilder = () => {
@@ -53,7 +174,9 @@ function App() {
   // GENERATE BLUEPRINT
   // =====================================================
 
-  const handleGenerateBlueprint = (newProject) => {
+  const handleGenerateBlueprint = (
+    newProject
+  ) => {
     console.log(
       "===================================="
     );
@@ -76,10 +199,10 @@ function App() {
       return;
     }
 
-    // Save in React state
+    // Save project in React state
     setProject(newProject);
 
-    // Save permanently in browser
+    // Save project permanently
     try {
       localStorage.setItem(
         "ai-project-current",
@@ -87,7 +210,7 @@ function App() {
       );
 
       console.log(
-        "Project successfully saved to localStorage."
+        "Project successfully saved."
       );
     } catch (error) {
       console.error(
@@ -96,7 +219,7 @@ function App() {
       );
     }
 
-    // Navigate to blueprint
+    // Go to blueprint
     setCurrentPage("blueprint");
   };
 
@@ -106,19 +229,25 @@ function App() {
 
   const handleStartBuilding = () => {
     console.log(
-      "Starting project with:",
-      project
+      "Starting project:"
     );
+
+    console.log(project);
 
     if (!project) {
       console.error(
-        "No project found while trying to start building."
+        "Cannot open dashboard because no project exists."
       );
 
       setCurrentPage("builder");
 
       return;
     }
+
+    // -------------------------------------------------
+    // IMPORTANT:
+    // The main project workspace is now the dashboard.
+    // -------------------------------------------------
 
     setCurrentPage("dashboard");
   };
@@ -129,6 +258,14 @@ function App() {
 
   const handleCreateAnother = () => {
     setCurrentPage("builder");
+  };
+
+  // =====================================================
+  // BACK TO HOME
+  // =====================================================
+
+  const handleGoHome = () => {
+    setCurrentPage("home");
   };
 
   // =====================================================
@@ -144,10 +281,31 @@ function App() {
   };
 
   // =====================================================
-  // OPEN AI MENTOR
+  // OPEN DASHBOARD
+  // =====================================================
+
+  const handleOpenDashboard = () => {
+    if (!project) {
+      setCurrentPage("builder");
+      return;
+    }
+
+    setCurrentPage("dashboard");
+  };
+
+  // =====================================================
+  // AI MENTOR
+  //
+  // TEMPORARILY KEPT AVAILABLE.
+  // It is NOT the default page anymore.
   // =====================================================
 
   const handleOpenMentor = () => {
+    if (!project) {
+      setCurrentPage("home");
+      return;
+    }
+
     setCurrentPage("mentor");
   };
 
@@ -159,19 +317,20 @@ function App() {
     return (
       <div className="app">
 
-        {/* ================= NAVBAR ================= */}
+        {/* =================================================
+            NAVBAR
+        ================================================= */}
 
         <nav className="navbar">
 
           <div
             className="logo"
-            onClick={() =>
-              setCurrentPage("home")
-            }
+            onClick={handleGoHome}
             style={{
               cursor: "pointer",
             }}
           >
+
             <div className="logo-icon">
               ✦
             </div>
@@ -179,6 +338,7 @@ function App() {
             <span>
               AI Project Mentor
             </span>
+
           </div>
 
           <div className="nav-links">
@@ -203,7 +363,9 @@ function App() {
 
         </nav>
 
-        {/* ================= HERO ================= */}
+        {/* =================================================
+            HERO
+        ================================================= */}
 
         <main>
 
@@ -278,16 +440,20 @@ function App() {
 
             </div>
 
-            {/* ================= AI PREVIEW ================= */}
+            {/* =================================================
+                AI PREVIEW
+            ================================================= */}
 
             <div className="mentor-preview">
 
               <div className="preview-header">
 
                 <span>
+
                   <span className="status-dot" />
 
                   AI Project Mentor
+
                 </span>
 
                 <span className="preview-label">
@@ -317,11 +483,13 @@ function App() {
               </div>
 
               <div className="idea-box">
+
                 💡
 
                 <span>
                   Describe your project idea...
                 </span>
+
               </div>
 
               <button
@@ -336,7 +504,9 @@ function App() {
 
           </section>
 
-          {/* ================= FEATURES ================= */}
+          {/* =================================================
+              FEATURES
+          ================================================= */}
 
           <section
             className="features"
@@ -436,7 +606,9 @@ function App() {
 
           </section>
 
-          {/* ================= HOW IT WORKS ================= */}
+          {/* =================================================
+              HOW IT WORKS
+          ================================================= */}
 
           <section
             className="how-it-works"
@@ -512,7 +684,9 @@ function App() {
 
           </section>
 
-          {/* ================= CTA ================= */}
+          {/* =================================================
+              CTA
+          ================================================= */}
 
           <section className="cta">
 
@@ -537,7 +711,9 @@ function App() {
 
         </main>
 
-        {/* ================= FOOTER ================= */}
+        {/* =================================================
+            FOOTER
+        ================================================= */}
 
         <footer>
 
@@ -565,9 +741,7 @@ function App() {
         onGenerateBlueprint={
           handleGenerateBlueprint
         }
-        onBack={() =>
-          setCurrentPage("home")
-        }
+        onBack={handleGoHome}
       />
     );
   }
@@ -577,6 +751,13 @@ function App() {
   // =====================================================
 
   if (currentPage === "blueprint") {
+
+    if (!project) {
+      setCurrentPage("builder");
+
+      return null;
+    }
+
     return (
       <ProjectBlueprint
         project={project}
@@ -591,10 +772,44 @@ function App() {
   }
 
   // =====================================================
-  // PROJECT DASHBOARD
+  // PROJECT DASHBOARD / WORKSPACE
   // =====================================================
 
   if (currentPage === "dashboard") {
+
+    if (!project) {
+      return (
+        <div className="app">
+
+          <div
+            style={{
+              padding: "60px 20px",
+              textAlign: "center",
+            }}
+          >
+
+            <h1>
+              No project found
+            </h1>
+
+            <p>
+              Create a project first.
+            </p>
+
+            <button
+              type="button"
+              className="primary-button"
+              onClick={openBuilder}
+            >
+              Create Project
+            </button>
+
+          </div>
+
+        </div>
+      );
+    }
+
     return (
       <ProjectDashboard
         project={project}
@@ -610,18 +825,26 @@ function App() {
 
   // =====================================================
   // AI MENTOR
+  //
+  // TEMPORARY:
+  // This page is still accessible from the dashboard,
+  // but it will NEVER be restored automatically after
+  // refresh while the feature is paused.
   // =====================================================
 
   if (currentPage === "mentor") {
+
+    if (!project) {
+      setCurrentPage("home");
+
+      return null;
+    }
+
     return (
       <AIMentor
         project={project}
         onBack={() => {
-          if (project) {
-            setCurrentPage("dashboard");
-          } else {
-            setCurrentPage("home");
-          }
+          setCurrentPage("dashboard");
         }}
       />
     );
@@ -634,19 +857,43 @@ function App() {
   return (
     <div className="app">
 
-      <h1>
-        Something went wrong.
-      </h1>
-
-      <button
-        type="button"
-        className="primary-button"
-        onClick={() =>
-          setCurrentPage("home")
-        }
+      <div
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: "40px",
+          textAlign: "center",
+        }}
       >
-        Go Home
-      </button>
+
+        <h1>
+          Something went wrong.
+        </h1>
+
+        <p>
+          Let's return to your project workspace.
+        </p>
+
+        <button
+          type="button"
+          className="primary-button"
+          onClick={() => {
+            if (project) {
+              setCurrentPage("dashboard");
+            } else {
+              setCurrentPage("home");
+            }
+          }}
+        >
+          {project
+            ? "Open Project Workspace"
+            : "Go Home"}
+        </button>
+
+      </div>
 
     </div>
   );

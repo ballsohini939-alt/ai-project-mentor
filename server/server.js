@@ -4,55 +4,36 @@ AI PROJECT MENTOR
 BACKEND SERVER
 ==================================================
 
+Stack:
+- Node.js
+- Express.js
+- CORS
+- Dotenv
+
 Features:
+- Project Blueprint Generator
+- Project-aware AI Mentor
+- Health Check
+- No paid API required
 
-1. Project Blueprint Generator
-2. AI Mentor
-3. Rule-based AI logic
-4. No paid API required
-5. CORS support
-6. JSON API
+Server:
+http://localhost:5000
 ==================================================
 */
 
+const express = require("express");
+const cors = require("cors");
+require("dotenv").config();
 
 /*
 ==================================================
-IMPORTS
-==================================================
-*/
-
-import express from "express";
-import cors from "cors";
-import dotenv from "dotenv";
-
-
-/*
-==================================================
-LOAD ENVIRONMENT VARIABLES
-==================================================
-*/
-
-dotenv.config();
-
-
-/*
-==================================================
-CREATE EXPRESS APP
+APP CONFIGURATION
 ==================================================
 */
 
 const app = express();
 
-
-/*
-==================================================
-PORT
-==================================================
-*/
-
-const PORT = 5000;
-
+const PORT = process.env.PORT || 5000;
 
 /*
 ==================================================
@@ -60,10 +41,15 @@ MIDDLEWARE
 ==================================================
 */
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type"],
+  })
+);
 
 app.use(express.json());
-
 
 /*
 ==================================================
@@ -72,23 +58,16 @@ ROOT ROUTE
 */
 
 app.get("/", (req, res) => {
-
-  res.json({
-    message:
-      "AI Project Mentor backend is running!",
+  res.status(200).json({
+    message: "AI Project Mentor backend is running!",
     status: "online",
     endpoints: {
-      generate:
-        "POST /api/generate",
-      mentor:
-        "POST /api/mentor",
-      health:
-        "GET /api/health",
+      generate: "POST /api/generate",
+      mentor: "POST /api/mentor",
+      health: "GET /api/health",
     },
   });
-
 });
-
 
 /*
 ==================================================
@@ -97,29 +76,25 @@ HEALTH CHECK
 */
 
 app.get("/api/health", (req, res) => {
-
-  res.json({
+  res.status(200).json({
     success: true,
-    message: "Backend is healthy.",
-    server: "AI Project Mentor",
+    status: "online",
+    message: "AI Project Mentor backend is healthy.",
+    port: PORT,
   });
-
 });
-
 
 /*
 ==================================================
-GENERATE PROJECT BLUEPRINT
+PROJECT BLUEPRINT GENERATOR
 ==================================================
 */
 
 app.post("/api/generate", (req, res) => {
-
   try {
-
     /*
     ================================================
-    GET REQUEST DATA
+    REQUEST DATA
     ================================================
     */
 
@@ -128,7 +103,6 @@ app.post("/api/generate", (req, res) => {
       category,
       experience,
     } = req.body;
-
 
     /*
     ================================================
@@ -141,18 +115,11 @@ app.post("/api/generate", (req, res) => {
       typeof idea !== "string" ||
       !idea.trim()
     ) {
-
       return res.status(400).json({
-
         success: false,
-
-        error:
-          "Project idea is required.",
-
+        error: "Project idea is required.",
       });
-
     }
-
 
     /*
     ================================================
@@ -160,22 +127,16 @@ app.post("/api/generate", (req, res) => {
     ================================================
     */
 
-    const cleanIdea =
-      idea.trim();
-
+    const cleanIdea = idea.trim();
 
     /*
     ================================================
-    LOWERCASE IDEA
-
-    IMPORTANT:
-    Only declared ONCE.
+    DETECT PROJECT TYPE
     ================================================
     */
 
     const lowerIdea =
       cleanIdea.toLowerCase();
-
 
     /*
     ================================================
@@ -183,483 +144,20 @@ app.post("/api/generate", (req, res) => {
     ================================================
     */
 
-    let title =
-      "AI Project";
+    let title = "AI Project";
 
     let problem =
-      "Students and beginner developers often struggle to turn their ideas into practical projects.";
+      "Users need a simple and useful application to solve their problem.";
 
     let solution =
-      "Build an intelligent project mentor that helps users transform ideas into structured, practical projects.";
+      "Build a focused application that provides useful functionality through a simple user experience.";
 
-    let users = [
-      "College Students",
-      "School Students",
-      "Beginner Developers",
-      "Self Learners",
-    ];
+    let users =
+      "Students and beginner users";
 
-    let features = [
+    let features = [];
 
-      {
-        title: "AI Conversation",
-
-        description:
-          "Allow users to interact with the assistant using natural language.",
-      },
-
-      {
-        title: "Smart Guidance",
-
-        description:
-          "Provide practical suggestions based on the user's project idea.",
-      },
-
-      {
-        title: "Personalized Assistance",
-
-        description:
-          "Adapt recommendations according to the user's goals and experience.",
-      },
-
-      {
-        title: "Progress Tracking",
-
-        description:
-          "Allow users to monitor completed tasks and project progress.",
-      },
-
-      {
-        title: "Responsive Interface",
-
-        description:
-          "Make the application accessible on desktop, tablet, and mobile devices.",
-      },
-
-    ];
-
-
-    /*
-    ================================================
-    STUDY ASSISTANT
-    ================================================
-    */
-
-    if (
-      lowerIdea.includes("study") ||
-      lowerIdea.includes("student") ||
-      lowerIdea.includes("learning")
-    ) {
-
-      title =
-        "AI Study Assistant";
-
-      problem =
-        "Students often struggle to organize their learning, understand difficult topics, and maintain a consistent study routine.";
-
-      solution =
-        "Build an intelligent study assistant that helps students create study plans, understand concepts, track progress, and stay organized.";
-
-      features = [
-
-        {
-          title:
-            "AI Conversation",
-
-          description:
-            "Allow students to ask questions and interact with the study assistant using natural language.",
-        },
-
-        {
-          title:
-            "Personalized Study Plans",
-
-          description:
-            "Create study plans based on subjects, available time, and learning goals.",
-        },
-
-        {
-          title:
-            "Smart Explanations",
-
-          description:
-            "Explain difficult concepts in simple and beginner-friendly language.",
-        },
-
-        {
-          title:
-            "Progress Tracking",
-
-          description:
-            "Allow students to track completed topics and monitor their learning progress.",
-        },
-
-        {
-          title:
-            "Responsive Interface",
-
-          description:
-            "Make the application accessible on desktop, tablet, and mobile devices.",
-        },
-
-      ];
-
-    }
-
-
-    /*
-    ================================================
-    PERSONAL ASSISTANT
-    ================================================
-    */
-
-    else if (
-      lowerIdea.includes(
-        "personal assistant"
-      ) ||
-      lowerIdea.includes(
-        "ai assistant"
-      )
-    ) {
-
-      title =
-        "AI Personal Assistant";
-
-      problem =
-        "Users often need help organizing tasks, finding information, and managing everyday activities.";
-
-      solution =
-        "Build an AI personal assistant that understands user requests and provides useful assistance through a simple conversational interface.";
-
-      features = [
-
-        {
-          title:
-            "AI Conversation",
-
-          description:
-            "Allow users to communicate with the assistant using natural language.",
-        },
-
-        {
-          title:
-            "Task Management",
-
-          description:
-            "Allow users to create, organize, and manage daily tasks.",
-        },
-
-        {
-          title:
-            "Smart Suggestions",
-
-          description:
-            "Provide useful suggestions based on the user's requests.",
-        },
-
-        {
-          title:
-            "Personalized Assistance",
-
-          description:
-            "Adapt responses according to the user's preferences and needs.",
-        },
-
-        {
-          title:
-            "Responsive Interface",
-
-          description:
-            "Provide a clean interface that works across different screen sizes.",
-        },
-
-      ];
-
-    }
-
-
-    /*
-    ================================================
-    INTERNSHIP FINDER
-    ================================================
-    */
-
-    else if (
-      lowerIdea.includes(
-        "internship"
-      )
-    ) {
-
-      title =
-        "Smart Internship Finder";
-
-      problem =
-        "Students often struggle to discover relevant internship opportunities and organize application information.";
-
-      solution =
-        "Build a platform that helps students discover, organize, and track internship opportunities.";
-
-      features = [
-
-        {
-          title:
-            "Internship Search",
-
-          description:
-            "Allow students to search for internship opportunities.",
-        },
-
-        {
-          title:
-            "Opportunity Filters",
-
-          description:
-            "Filter opportunities based on skills, location, and domain.",
-        },
-
-        {
-          title:
-            "Application Tracker",
-
-          description:
-            "Track internship applications and their current status.",
-        },
-
-        {
-          title:
-            "Profile Management",
-
-          description:
-            "Store important student skills and career information.",
-        },
-
-        {
-          title:
-            "Responsive Interface",
-
-          description:
-            "Provide a user-friendly experience across devices.",
-        },
-
-      ];
-
-    }
-
-
-    /*
-    ================================================
-    EXPENSE / FINANCE
-    ================================================
-    */
-
-    else if (
-      lowerIdea.includes(
-        "expense"
-      ) ||
-      lowerIdea.includes(
-        "finance"
-      ) ||
-      lowerIdea.includes(
-        "budget"
-      )
-    ) {
-
-      title =
-        "Smart Personal Finance Tracker";
-
-      problem =
-        "Users often find it difficult to track spending and understand where their money is going.";
-
-      solution =
-        "Build a simple finance management application that helps users record transactions, monitor spending, and manage budgets.";
-
-      features = [
-
-        {
-          title:
-            "Transaction Tracking",
-
-          description:
-            "Allow users to record income and expenses.",
-        },
-
-        {
-          title:
-            "Budget Management",
-
-          description:
-            "Allow users to create and monitor monthly budgets.",
-        },
-
-        {
-          title:
-            "Financial Summary",
-
-          description:
-            "Display income, expenses, savings, and balance.",
-        },
-
-        {
-          title:
-            "Spending Insights",
-
-          description:
-            "Show useful information about spending patterns.",
-        },
-
-        {
-          title:
-            "Responsive Dashboard",
-
-          description:
-            "Provide a clean dashboard for managing finances.",
-        },
-
-      ];
-
-    }
-
-
-    /*
-    ================================================
-    CHATBOT
-    ================================================
-    */
-
-    else if (
-      lowerIdea.includes(
-        "chatbot"
-      ) ||
-      lowerIdea.includes(
-        "chat bot"
-      )
-    ) {
-
-      title =
-        "AI Chatbot";
-
-      problem =
-        "Users need a simple way to interact with an intelligent system and receive useful responses.";
-
-      solution =
-        "Build a conversational chatbot that understands user questions and provides helpful responses.";
-
-    }
-
-
-    /*
-    ================================================
-    TODO / TASK MANAGER
-    ================================================
-    */
-
-    else if (
-      lowerIdea.includes(
-        "todo"
-      ) ||
-      lowerIdea.includes(
-        "to-do"
-      ) ||
-      lowerIdea.includes(
-        "task manager"
-      ) ||
-      lowerIdea.includes(
-        "tasks"
-      )
-    ) {
-
-      title =
-        "Smart Task Manager";
-
-      problem =
-        "People often struggle to organize tasks and remember what needs to be completed.";
-
-      solution =
-        "Build a task management application that helps users organize, prioritize, and track their work.";
-
-    }
-
-
-    /*
-    ================================================
-    WEATHER
-    ================================================
-    */
-
-    else if (
-      lowerIdea.includes(
-        "weather"
-      )
-    ) {
-
-      title =
-        "Weather Assistant";
-
-      problem =
-        "Users need quick and understandable weather information when planning their activities.";
-
-      solution =
-        "Build a weather assistant that presents weather information in a simple and user-friendly way.";
-
-    }
-
-
-    /*
-    ================================================
-    RECOMMENDATION
-    ================================================
-    */
-
-    else if (
-      lowerIdea.includes(
-        "recommendation"
-      )
-    ) {
-
-      title =
-        "Smart Recommendation System";
-
-      problem =
-        "Users often have difficulty finding relevant options from large amounts of information.";
-
-      solution =
-        "Build a recommendation system that provides personalized suggestions based on user preferences.";
-
-    }
-
-
-    /*
-    ================================================
-    AI PROJECT MENTOR
-    ================================================
-    */
-
-    else if (
-      lowerIdea.includes(
-        "project mentor"
-      )
-    ) {
-
-      title =
-        "AI Project Mentor";
-
-      problem =
-        "Beginner developers often have project ideas but do not know how to convert them into practical implementations.";
-
-      solution =
-        "Build an AI project mentor that transforms ideas into structured project plans and guides users through development.";
-
-    }
-
-
-    /*
-    ================================================
-    TECH STACK
-    ================================================
-    */
-
-    const techStack = {
-
+    let techStack = {
       frontend: [
         "React",
         "JavaScript",
@@ -672,7 +170,7 @@ app.post("/api/generate", (req, res) => {
       ],
 
       ai: [
-        "AI Mentor Logic",
+        "Rule-based AI Mentor",
         "Prompt Engineering",
         "LLM API (Future)",
       ],
@@ -681,70 +179,432 @@ app.post("/api/generate", (req, res) => {
         "Local Storage",
         "MongoDB (Future)",
       ],
-
     };
-
 
     /*
     ================================================
-    ROADMAP
+    AI PERSONAL ASSISTANT
     ================================================
     */
 
-    const roadmap = [
+    if (
+      lowerIdea.includes("ai assistant") ||
+      lowerIdea.includes("personal assistant") ||
+      lowerIdea.includes("student assistant") ||
+      lowerIdea.includes("ai mentor")
+    ) {
+      title = "AI Personal Assistant";
 
-      {
-        phase: "01",
+      problem =
+        "Students often struggle to organize their tasks, understand what to work on next, and get useful guidance while working on projects.";
 
-        title:
-          "Project Setup",
+      solution =
+        "Build an AI-powered personal assistant that helps students organize tasks, receive project-aware guidance, get smart suggestions, and track their progress.";
 
-        description:
-          "Initialize the React frontend and Node.js backend.",
-      },
+      users =
+        "Students, learners, and beginner developers";
 
-      {
-        phase: "02",
+      features = [
+        {
+          title: "AI Conversation",
+          description:
+            "Create a conversational interface where students can interact with their assistant.",
+        },
 
-        title:
-          "Build Core Features",
+        {
+          title: "Task Management",
+          description:
+            "Allow students to create, organize, update, and complete tasks.",
+        },
 
-        description:
-          "Create the main interface and implement the most important functionality.",
-      },
+        {
+          title: "Smart Suggestions",
+          description:
+            "Provide useful suggestions based on the student's current project and progress.",
+        },
 
-      {
-        phase: "03",
+        {
+          title: "Personalized Assistance",
+          description:
+            "Give project-aware and personalized guidance to the user.",
+        },
 
-        title:
-          "Build AI Mentor",
+        {
+          title: "Responsive Interface",
+          description:
+            "Create a clean interface that works across different screen sizes.",
+        },
+      ];
 
-        description:
-          "Create the mentor system that understands project questions and provides useful guidance.",
-      },
+      techStack = {
+        frontend: [
+          "React",
+          "JavaScript",
+          "CSS",
+        ],
 
-      {
-        phase: "04",
+        backend: [
+          "Node.js",
+          "Express.js",
+        ],
 
-        title:
-          "Add Progress Tracking",
+        ai: [
+          "Rule-based AI Mentor",
+          "Prompt Engineering",
+          "LLM API (Future)",
+        ],
 
-        description:
-          "Track completed tasks, features, and project progress.",
-      },
+        database: [
+          "Local Storage",
+          "MongoDB (Future)",
+        ],
+      };
+    }
 
-      {
-        phase: "05",
+    /*
+    ================================================
+    STUDY ASSISTANT
+    ================================================
+    */
 
-        title:
-          "Testing & Deployment",
+    else if (
+      lowerIdea.includes("study") ||
+      lowerIdea.includes("learning") ||
+      lowerIdea.includes("education")
+    ) {
+      title = "AI Study Assistant";
 
-        description:
-          "Test the application, improve the interface, fix errors, and prepare the project for deployment.",
-      },
+      problem =
+        "Students can struggle with organizing their study activities and understanding difficult topics.";
 
-    ];
+      solution =
+        "Build an assistant that helps students organize learning tasks and receive useful study guidance.";
 
+      users =
+        "Students and learners";
+
+      features = [
+        {
+          title: "Study Chat",
+          description:
+            "Allow students to ask questions and receive guidance.",
+        },
+
+        {
+          title: "Task Management",
+          description:
+            "Create and manage study tasks.",
+        },
+
+        {
+          title: "Study Planner",
+          description:
+            "Organize learning activities and priorities.",
+        },
+
+        {
+          title: "Smart Suggestions",
+          description:
+            "Recommend useful study actions.",
+        },
+
+        {
+          title: "Progress Tracking",
+          description:
+            "Track completed learning activities.",
+        },
+      ];
+    }
+
+    /*
+    ================================================
+    TODO / TASK PROJECT
+    ================================================
+    */
+
+    else if (
+      lowerIdea.includes("todo") ||
+      lowerIdea.includes("task manager") ||
+      lowerIdea.includes("task management")
+    ) {
+      title = "Smart Task Manager";
+
+      problem =
+        "Users need a simple way to organize and track their tasks.";
+
+      solution =
+        "Build a task management application with organization and progress tracking.";
+
+      users =
+        "Students and general users";
+
+      features = [
+        {
+          title: "Create Tasks",
+          description:
+            "Allow users to create new tasks.",
+        },
+
+        {
+          title: "Edit Tasks",
+          description:
+            "Allow users to update existing tasks.",
+        },
+
+        {
+          title: "Complete Tasks",
+          description:
+            "Allow users to mark tasks as completed.",
+        },
+
+        {
+          title: "Task Organization",
+          description:
+            "Organize tasks by priority or category.",
+        },
+
+        {
+          title: "Progress Tracking",
+          description:
+            "Track completed and remaining tasks.",
+        },
+      ];
+    }
+
+    /*
+    ================================================
+    FINANCE PROJECT
+    ================================================
+    */
+
+    else if (
+      lowerIdea.includes("finance") ||
+      lowerIdea.includes("expense") ||
+      lowerIdea.includes("money")
+    ) {
+      title = "Personal Finance Assistant";
+
+      problem =
+        "Users may find it difficult to track and understand their spending.";
+
+      solution =
+        "Build an application that helps users record expenses and understand their financial activity.";
+
+      users =
+        "Students and young adults";
+
+      features = [
+        {
+          title: "Expense Tracking",
+          description:
+            "Record daily expenses.",
+        },
+
+        {
+          title: "Categories",
+          description:
+            "Organize expenses into categories.",
+        },
+
+        {
+          title: "Budget Tracking",
+          description:
+            "Track spending against a budget.",
+        },
+
+        {
+          title: "Insights",
+          description:
+            "Provide useful spending insights.",
+        },
+
+        {
+          title: "Progress Dashboard",
+          description:
+            "Display financial information clearly.",
+        },
+      ];
+    }
+
+    /*
+    ================================================
+    CHATBOT PROJECT
+    ================================================
+    */
+
+    else if (
+      lowerIdea.includes("chatbot") ||
+      lowerIdea.includes("chat bot")
+    ) {
+      title = "AI Chatbot";
+
+      problem =
+        "Users need an accessible conversational interface for interacting with an application.";
+
+      solution =
+        "Build a chatbot interface with project-aware conversational logic.";
+
+      users =
+        "Students and general users";
+
+      features = [
+        {
+          title: "Chat Interface",
+          description:
+            "Create the main conversational interface.",
+        },
+
+        {
+          title: "Message Handling",
+          description:
+            "Allow users to send and receive messages.",
+        },
+
+        {
+          title: "Conversation History",
+          description:
+            "Keep track of previous messages.",
+        },
+
+        {
+          title: "Smart Responses",
+          description:
+            "Generate useful context-aware responses.",
+        },
+
+        {
+          title: "Responsive Interface",
+          description:
+            "Make the chatbot usable across screen sizes.",
+        },
+      ];
+    }
+
+    /*
+    ================================================
+    GENERIC PROJECT
+    ================================================
+    */
+
+    else {
+      title = "AI Project";
+
+      features = [
+        {
+          title: "Project Setup",
+          description:
+            "Set up the basic application structure.",
+        },
+
+        {
+          title: "Core Functionality",
+          description:
+            `Implement the main functionality of ${title}.`,
+        },
+
+        {
+          title: "User Interface",
+          description:
+            "Build a clear and usable interface.",
+        },
+
+        {
+          title: "Smart Assistance",
+          description:
+            "Add useful intelligent functionality.",
+        },
+
+        {
+          title: "Progress Tracking",
+          description:
+            "Track project progress and completed work.",
+        },
+      ];
+    }
+
+    /*
+    ================================================
+    DYNAMIC ROADMAP
+    ================================================
+    */
+
+    let roadmap;
+
+    if (title === "AI Personal Assistant") {
+      roadmap = [
+        {
+          phase: "01",
+          title: "Project Setup",
+          description:
+            "Initialize the React frontend and Node.js backend.",
+        },
+
+        {
+          phase: "02",
+          title: "Build AI Conversation",
+          description:
+            "Create the main conversational interface and project-aware assistant logic.",
+        },
+
+        {
+          phase: "03",
+          title: "Build Task Management",
+          description:
+            "Allow users to create, organize, update, and complete tasks.",
+        },
+
+        {
+          phase: "04",
+          title: "Add Smart Assistance",
+          description:
+            "Add personalized suggestions and useful assistant capabilities.",
+        },
+
+        {
+          phase: "05",
+          title: "Testing & Deployment",
+          description:
+            "Test the application, improve the interface, fix errors, and prepare it for deployment.",
+        },
+      ];
+    } else {
+      roadmap = [
+        {
+          phase: "01",
+          title: "Project Setup",
+          description:
+            "Initialize the React frontend and Node.js backend.",
+        },
+
+        {
+          phase: "02",
+          title: "Build Core Features",
+          description:
+            `Implement the main functionality of ${title}.`,
+        },
+
+        {
+          phase: "03",
+          title: "Build AI Mentor",
+          description:
+            "Create project-aware mentor guidance.",
+        },
+
+        {
+          phase: "04",
+          title: "Add Progress Tracking",
+          description:
+            "Track completed tasks, features, and project progress.",
+        },
+
+        {
+          phase: "05",
+          title: "Testing & Deployment",
+          description:
+            "Test the application, fix errors, improve the interface, and prepare it for deployment.",
+        },
+      ];
+    }
 
     /*
     ================================================
@@ -755,65 +615,46 @@ app.post("/api/generate", (req, res) => {
     let difficulty =
       "Beginner → Intermediate";
 
-    if (
-      experience === "Advanced"
-    ) {
-
+    if (experience === "Advanced") {
       difficulty =
         "Intermediate → Advanced";
-
     } else if (
       experience === "Intermediate"
     ) {
-
-      difficulty =
-        "Intermediate";
-
+      difficulty = "Intermediate";
     }
-
 
     /*
     ================================================
-    AI MENTOR INSIGHTS
+    INSIGHTS
     ================================================
     */
 
     const insights = [
-
       {
-        title:
-          "Start Small",
-
+        title: "Start Small",
         description:
           "Build the core functionality first before adding advanced features.",
       },
 
       {
-        title:
-          "Focus on Users",
-
+        title: "Focus on Users",
         description:
-          "Design every feature around solving a real problem for your target users.",
+          "Design every feature around solving a real problem.",
       },
 
       {
-        title:
-          "Test Continuously",
-
+        title: "Test Continuously",
         description:
           "Test every feature as you build instead of waiting until the end.",
       },
 
       {
-        title:
-          "Build an MVP",
-
+        title: "Build an MVP",
         description:
           "Start with a simple working version and gradually add advanced capabilities.",
       },
-
     ];
-
 
     /*
     ================================================
@@ -822,24 +663,22 @@ app.post("/api/generate", (req, res) => {
     */
 
     const blueprint = {
-
       title,
-
       idea: cleanIdea,
 
       category:
-        category ||
-        "Web Application",
+        category || "Web Application",
 
       experience:
-        experience ||
-        "Beginner",
+        experience || "Beginner",
 
       problem,
 
       solution,
 
       users,
+
+      targetUsers: users,
 
       features,
 
@@ -849,13 +688,10 @@ app.post("/api/generate", (req, res) => {
 
       difficulty,
 
-      impact:
-        "High",
+      impact: "High",
 
       insights,
-
     };
-
 
     /*
     ================================================
@@ -863,66 +699,79 @@ app.post("/api/generate", (req, res) => {
     ================================================
     */
 
+    console.log("");
+    console.log("========================================");
+    console.log("BLUEPRINT GENERATED");
+    console.log("========================================");
+    console.log("Project:", title);
+    console.log("Idea:", cleanIdea);
     console.log(
-      "Blueprint generated:",
-      title
+      "Features:",
+      features.map(
+        (feature) => feature.title
+      )
     );
-
+    console.log(
+      "Roadmap:",
+      roadmap.map(
+        (phase) => phase.title
+      )
+    );
+    console.log("========================================");
+    console.log("");
 
     /*
     ================================================
-    SEND RESPONSE
+    RESPONSE
     ================================================
     */
 
     return res.status(200).json({
-
       success: true,
-
       result: blueprint,
-
     });
 
   } catch (error) {
-
     console.error(
       "Generate error:",
       error
     );
 
     return res.status(500).json({
-
       success: false,
-
       error:
         "Failed to generate project blueprint.",
-
     });
-
   }
-
 });
-
 
 /*
 ==================================================
 AI MENTOR
 ==================================================
 
-This version does NOT require a paid API key.
+IMPORTANT:
 
-It uses local project-aware logic so the
-hackathon MVP can work completely offline.
+This is PROJECT-AWARE.
+
+It does NOT use a hardcoded project.
+
+It reads:
+- title
+- idea
+- features
+- roadmap
+- tech stack
+
+from AIMentor.jsx.
 ==================================================
 */
 
 app.post("/api/mentor", (req, res) => {
-
   try {
-
     /*
     ================================================
-    REQUEST DATA
+    REQUEST
     ================================================
     */
 
@@ -930,7 +779,6 @@ app.post("/api/mentor", (req, res) => {
       question,
       project,
     } = req.body;
-
 
     /*
     ================================================
@@ -943,139 +791,462 @@ app.post("/api/mentor", (req, res) => {
       typeof question !== "string" ||
       !question.trim()
     ) {
-
       return res.status(400).json({
-
         success: false,
-
         error:
           "Mentor question is required.",
-
       });
-
     }
-
 
     /*
     ================================================
-    CLEAN QUESTION
+    QUESTION
     ================================================
     */
 
     const cleanQuestion =
       question.trim();
 
-
     const lowerQuestion =
       cleanQuestion.toLowerCase();
 
-
     /*
     ================================================
-    PROJECT INFORMATION
+    PROJECT
     ================================================
     */
 
     const projectTitle =
       project?.title ||
-      "your project";
+      "Your Project";
 
     const projectIdea =
       project?.idea ||
-      "";
+      "your project idea";
 
+    const projectFeatures =
+      Array.isArray(
+        project?.features
+      )
+        ? project.features
+        : [];
+
+    const projectRoadmap =
+      Array.isArray(
+        project?.roadmap
+      )
+        ? project.roadmap
+        : [];
+
+    const projectTechStack =
+      project?.techStack || {};
 
     /*
     ================================================
-    DEFAULT ANSWER
+    FEATURE HELPERS
+    ================================================
+    */
+
+    const getFeatureTitle = (
+      index
+    ) => {
+      const feature =
+        projectFeatures[index];
+
+      if (!feature) {
+        return `Feature ${index + 1}`;
+      }
+
+      if (
+        typeof feature ===
+        "string"
+      ) {
+        return feature;
+      }
+
+      return (
+        feature.title ||
+        feature.name ||
+        `Feature ${index + 1}`
+      );
+    };
+
+    const getFeatureDescription = (
+      index
+    ) => {
+      const feature =
+        projectFeatures[index];
+
+      if (!feature) {
+        return "Core project functionality.";
+      }
+
+      if (
+        typeof feature ===
+        "string"
+      ) {
+        return "Core project functionality.";
+      }
+
+      return (
+        feature.description ||
+        feature.details ||
+        "Core project functionality."
+      );
+    };
+
+    /*
+    ================================================
+    ROADMAP HELPERS
+    ================================================
+    */
+
+    const getRoadmapTitle = (
+      index
+    ) => {
+      const phase =
+        projectRoadmap[index];
+
+      if (!phase) {
+        return `Phase ${index + 1}`;
+      }
+
+      if (
+        typeof phase ===
+        "string"
+      ) {
+        return phase;
+      }
+
+      return (
+        phase.title ||
+        phase.name ||
+        `Phase ${index + 1}`
+      );
+    };
+
+    const getRoadmapDescription = (
+      index
+    ) => {
+      const phase =
+        projectRoadmap[index];
+
+      if (!phase) {
+        return "Complete this development phase.";
+      }
+
+      if (
+        typeof phase ===
+        "string"
+      ) {
+        return "Complete this development phase.";
+      }
+
+      return (
+        phase.description ||
+        phase.details ||
+        "Complete this development phase."
+      );
+    };
+
+    /*
+    ================================================
+    FEATURE LIST
+    ================================================
+    */
+
+    const featureList =
+      projectFeatures.length > 0
+        ? projectFeatures
+            .map(
+              (_, index) =>
+                `${index + 1}. ${getFeatureTitle(index)}`
+            )
+            .join("\n")
+        : "No features available.";
+
+    /*
+    ================================================
+    ROADMAP LIST
+    ================================================
+    */
+
+    const roadmapList =
+      projectRoadmap.length > 0
+        ? projectRoadmap
+            .map(
+              (_, index) =>
+                `${index + 1}. ${getRoadmapTitle(index)}`
+            )
+            .join("\n")
+        : "No roadmap available.";
+
+    /*
+    ================================================
+    DEFAULT RESPONSE
     ================================================
     */
 
     let answer = `
+For ${projectTitle}, I recommend building your project one phase at a time.
 
-For ${projectTitle}, start by building the core functionality.
+Your project idea:
 
-Break the project into small features and implement them one at a time.
+${projectIdea}
 
-Your immediate goal should be to create a simple working MVP before adding advanced functionality.
+Your roadmap:
 
+${roadmapList}
+
+Your first priority is:
+
+### ${getRoadmapTitle(0)}
+
+${getRoadmapDescription(0)}
+
+Build it, test it, and then continue to the next phase.
     `.trim();
-
 
     /*
     ================================================
-    BUILD FIRST
+    HOW SHOULD I START?
     ================================================
     */
 
     if (
       lowerQuestion.includes(
-        "build first"
+        "how should i start"
       ) ||
       lowerQuestion.includes(
-        "start"
+        "where should i start"
+      ) ||
+      lowerQuestion.includes(
+        "how do i start"
       ) ||
       lowerQuestion.includes(
         "first step"
+      ) ||
+      lowerQuestion.includes(
+        "start this project"
       )
     ) {
-
       answer = `
+To start **${projectTitle}**, follow your actual project roadmap.
 
-Start with the MVP of ${projectTitle}.
+### Step 1 — ${getRoadmapTitle(0)}
 
-Recommended order:
+${getRoadmapDescription(0)}
 
-1. Create the main dashboard.
-2. Add the most important core feature.
-3. Test that feature.
-4. Add the AI Mentor.
-5. Add progress tracking.
-6. Polish the interface.
+### Step 2 — ${getRoadmapTitle(1)}
 
-Don't try to build everything at once.
+${getRoadmapDescription(1)}
 
-Get one complete feature working before moving to the next one.
+### Step 3 — ${getRoadmapTitle(2)}
 
+${getRoadmapDescription(2)}
+
+Start with Phase 01 and make sure it works before moving forward.
       `.trim();
-
     }
-
 
     /*
     ================================================
-    FEATURES
+    FEATURES FIRST
     ================================================
     */
 
     else if (
       lowerQuestion.includes(
-        "feature"
+        "what features should i build first"
+      ) ||
+      lowerQuestion.includes(
+        "which features should i build first"
+      ) ||
+      lowerQuestion.includes(
+        "features should i build first"
+      )
+    ) {
+      answer = `
+For **${projectTitle}**, build your features in this order:
+
+### 1. ${getFeatureTitle(0)}
+
+${getFeatureDescription(0)}
+
+### 2. ${getFeatureTitle(1)}
+
+${getFeatureDescription(1)}
+
+### 3. ${getFeatureTitle(2)}
+
+${getFeatureDescription(2)}
+
+### 4. ${getFeatureTitle(3)}
+
+${getFeatureDescription(3)}
+
+### 5. ${getFeatureTitle(4)}
+
+${getFeatureDescription(4)}
+
+For your MVP, focus on the first three core features before adding extra functionality.
+      `.trim();
+    }
+
+    /*
+    ================================================
+    AFTER DASHBOARD
+    ================================================
+    */
+
+    else if (
+      lowerQuestion.includes(
+        "what should i build after the dashboard"
+      ) ||
+      lowerQuestion.includes(
+        "what should i build after dashboard"
+      ) ||
+      lowerQuestion.includes(
+        "after the dashboard"
+      ) ||
+      lowerQuestion.includes(
+        "after dashboard"
+      )
+    ) {
+      /*
+      -----------------------------------------------
+      IMPORTANT:
+      Dashboard is not part of the roadmap.
+
+      Therefore after the dashboard,
+      continue with roadmap Phase 02.
+      -----------------------------------------------
+      */
+
+      const nextPhaseIndex =
+        projectRoadmap.length > 1
+          ? 1
+          : 0;
+
+      answer = `
+If your dashboard is already complete, your next step should be the next development phase in your roadmap.
+
+### Your roadmap
+
+${roadmapList}
+
+### Next: ${getRoadmapTitle(nextPhaseIndex)}
+
+${getRoadmapDescription(nextPhaseIndex)}
+
+For **${projectTitle}**, do not add unnecessary features yet. Finish this phase, test it, and then move to the following phase.
+
+### After that
+
+1. ${getRoadmapTitle(2)}
+2. ${getRoadmapTitle(3)}
+3. ${getRoadmapTitle(4)}
+      `.trim();
+    }
+
+    /*
+    ================================================
+    WHAT SHOULD I BUILD NEXT?
+    ================================================
+    */
+
+    else if (
+      lowerQuestion.includes(
+        "what should i build next"
+      ) ||
+      lowerQuestion.includes(
+        "what do i build next"
+      ) ||
+      lowerQuestion.includes(
+        "what should i do next"
+      )
+    ) {
+      answer = `
+For **${projectTitle}**, your next development phase is:
+
+### ${getRoadmapTitle(0)}
+
+${getRoadmapDescription(0)}
+
+Your complete roadmap is:
+
+${roadmapList}
+
+Finish the current phase before expanding the project.
+      `.trim();
+    }
+
+    /*
+    ================================================
+    WHAT FEATURES DO I HAVE?
+    ================================================
+    */
+
+    else if (
+      lowerQuestion.includes(
+        "what features"
+      ) ||
+      lowerQuestion.includes(
+        "which features"
+      ) ||
+      lowerQuestion.includes(
+        "features do i have"
+      ) ||
+      lowerQuestion.includes(
+        "features in my project"
       ) ||
       lowerQuestion.includes(
         "what should i add"
-      ) ||
-      lowerQuestion.includes(
-        "what can i add"
       )
     ) {
-
       answer = `
+Your **${projectTitle}** currently has:
 
-For ${projectTitle}, focus on these core features:
+${featureList}
 
-1. AI Mentor
-2. Personalized Planning
-3. Smart Explanations
-4. Progress Tracking
-5. Dashboard
-
-For a hackathon, make these features functional instead of adding many unfinished features.
-
+For the MVP, make the core features functional before adding more features.
       `.trim();
-
     }
 
+    /*
+    ================================================
+    ROADMAP
+    ================================================
+    */
+
+    else if (
+      lowerQuestion.includes(
+        "roadmap"
+      ) ||
+      lowerQuestion.includes(
+        "development plan"
+      ) ||
+      lowerQuestion.includes(
+        "development phases"
+      ) ||
+      lowerQuestion.includes(
+        "phases"
+      )
+    ) {
+      answer = `
+Here is the actual roadmap for **${projectTitle}**:
+
+${roadmapList}
+
+### Immediate priority
+
+**${getRoadmapTitle(0)}**
+
+${getRoadmapDescription(0)}
+
+Complete the phases in order.
+      `.trim();
+    }
 
     /*
     ================================================
@@ -1085,81 +1256,225 @@ For a hackathon, make these features functional instead of adding many unfinishe
 
     else if (
       lowerQuestion.includes(
-        "technology"
+        "which technology"
       ) ||
       lowerQuestion.includes(
-        "technology should"
+        "what technology"
+      ) ||
+      lowerQuestion.includes(
+        "which tech"
       ) ||
       lowerQuestion.includes(
         "tech stack"
       ) ||
       lowerQuestion.includes(
-        "which tech"
+        "technology should"
       )
     ) {
+      const frontend =
+        Array.isArray(
+          projectTechStack.frontend
+        )
+          ? projectTechStack.frontend.join(
+              ", "
+            )
+          : "Not specified";
+
+      const backend =
+        Array.isArray(
+          projectTechStack.backend
+        )
+          ? projectTechStack.backend.join(
+              ", "
+            )
+          : "Not specified";
+
+      const ai =
+        Array.isArray(
+          projectTechStack.ai
+        )
+          ? projectTechStack.ai.join(
+              ", "
+            )
+          : "Not specified";
+
+      const database =
+        Array.isArray(
+          projectTechStack.database
+        )
+          ? projectTechStack.database.join(
+              ", "
+            )
+          : "Not specified";
 
       answer = `
+For **${projectTitle}**, your blueprint recommends:
 
-For ${projectTitle}, your current stack is a good choice:
+### Frontend
 
-Frontend:
-React + JavaScript + CSS
+${frontend}
 
-Backend:
-Node.js + Express.js
+### Backend
 
-Storage:
-Local Storage
+${backend}
 
-AI:
-Local Mentor Logic
+### AI
 
-Future:
-You can connect an external AI service later if you find a suitable free option.
+${ai}
 
-You don't need a paid API to complete the current MVP.
+### Database / Storage
 
+${database}
+
+For your current MVP, continue with:
+
+**React + JavaScript + Node.js + Express.js + Local Storage**
+
+You do not need a paid AI API for the current Mentor.
       `.trim();
-
     }
-
 
     /*
     ================================================
-    HACKATHON
+    CURRENT PROJECT
     ================================================
     */
 
     else if (
       lowerQuestion.includes(
-        "hackathon"
+        "what is my current project"
+      ) ||
+      lowerQuestion ===
+        "what is my project" ||
+      lowerQuestion.includes(
+        "my current project"
       ) ||
       lowerQuestion.includes(
-        "hackathon improve"
+        "project idea"
+      )
+    ) {
+      answer = `
+Your current project is:
+
+### ${projectTitle}
+
+${projectIdea}
+
+### Current Features
+
+${featureList}
+
+### Roadmap
+
+${roadmapList}
+
+Your first development priority is:
+
+### ${getRoadmapTitle(0)}
+      `.trim();
+    }
+
+    /*
+    ================================================
+    MAKE PROJECT BETTER
+    ================================================
+    */
+
+    else if (
+      lowerQuestion.includes(
+        "make this project better"
+      ) ||
+      lowerQuestion.includes(
+        "make it better"
+      ) ||
+      lowerQuestion.includes(
+        "improve this project"
       ) ||
       lowerQuestion.includes(
         "improve it"
+      ) ||
+      lowerQuestion.includes(
+        "hackathon"
       )
     ) {
-
       answer = `
+To make **${projectTitle}** stronger:
 
-To make ${projectTitle} stronger for a hackathon:
+1. Make ${getFeatureTitle(0)} fully functional.
+2. Connect the features into one complete user flow.
+3. Keep the interface simple and clear.
+4. Make the Mentor understand the project context.
+5. Keep progress tracking connected to the roadmap.
+6. Handle errors properly.
+7. Test every major feature.
+8. Polish the UI after the functionality works.
 
-1. Clearly demonstrate the problem.
-2. Show the complete user journey.
-3. Keep the UI polished.
-4. Make the core features actually work.
-5. Demonstrate the AI Mentor.
-6. Show progress tracking.
-7. Explain the project's real-world impact.
+For a hackathon, a polished working MVP is stronger than many unfinished features.
 
-A polished working MVP is much stronger than a huge unfinished application.
+Your most important priority is:
 
+### ${getFeatureTitle(0)}
       `.trim();
-
     }
 
+    /*
+    ================================================
+    API / AI
+    ================================================
+    */
+
+    else if (
+      lowerQuestion.includes("api") ||
+      lowerQuestion.includes("openai") ||
+      lowerQuestion.includes("llm") ||
+      lowerQuestion.includes("paid ai")
+    ) {
+      answer = `
+You do not need a paid AI API for the current MVP.
+
+The **${projectTitle}** Mentor currently uses project-aware rule-based logic.
+
+It reads:
+
+• Project title
+• Project idea
+• Project features
+• Project roadmap
+• Project technology stack
+
+Later, you can connect an external LLM API if you want more advanced natural-language responses.
+      `.trim();
+    }
+
+    /*
+    ================================================
+    PROGRESS
+    ================================================
+    */
+
+    else if (
+      lowerQuestion.includes(
+        "progress"
+      ) ||
+      lowerQuestion.includes(
+        "tracking"
+      )
+    ) {
+      answer = `
+For **${projectTitle}**, progress should follow the actual roadmap:
+
+${roadmapList}
+
+Your dashboard can track:
+
+• Completed phases
+• Current phase
+• Next phase
+• Overall completion percentage
+
+For the MVP, Local Storage is enough.
+      `.trim();
+    }
 
     /*
     ================================================
@@ -1181,245 +1496,52 @@ A polished working MVP is much stronger than a huge unfinished application.
         "not working"
       )
     ) {
-
       answer = `
-
-Let's debug ${projectTitle} systematically.
+Let's debug **${projectTitle}** systematically.
 
 1. Read the exact error message.
-2. Identify the file mentioned.
-3. Check the line number.
-4. Check the browser console.
-5. Check the backend terminal.
+2. Check the browser console.
+3. Check the Node.js terminal.
+4. Check the file and line number.
+5. Make sure the backend is running on port 5000.
 6. Fix one problem at a time.
-7. Restart the server if necessary.
-8. Test the feature again.
+7. Test the feature again.
 
-If you give me the exact error message, we can identify the problem more precisely.
-
+Send me the exact error message if you need help.
       `.trim();
-
     }
-
 
     /*
     ================================================
-    AI QUESTIONS
+    LOG REQUEST
     ================================================
     */
 
-    else if (
-      lowerQuestion.includes(
-        "api"
-      ) ||
-      lowerQuestion.includes(
-        "openai"
-      ) ||
-      lowerQuestion.includes(
-        "llm"
-      ) ||
-      lowerQuestion.includes(
-        "artificial intelligence"
-      )
-    ) {
-
-      answer = `
-
-You don't need a paid OpenAI API key for the current version.
-
-The project currently uses local mentor logic.
-
-That lets us demonstrate the AI Mentor experience without paying for an API.
-
-Later, the backend can be upgraded to connect to an external AI service without rebuilding the frontend.
-
-      `.trim();
-
-    }
-
-
-    /*
-    ================================================
-    STUDY ASSISTANT
-    ================================================
-    */
-
-    else if (
-      lowerQuestion.includes(
-        "study plan"
-      ) ||
-      lowerQuestion.includes(
-        "study planner"
-      )
-    ) {
-
-      answer = `
-
-For the study assistant, create a simple study planner.
-
-Ask the student for:
-
-• Subject
-• Topic
-• Available study time
-• Target date
-• Learning goal
-
-Then generate a structured plan.
-
-Start with rule-based planning first. Later, an external AI service can make the recommendations more intelligent.
-
-      `.trim();
-
-    }
-
-
-    /*
-    ================================================
-    DASHBOARD
-    ================================================
-    */
-
-    else if (
-      lowerQuestion.includes(
-        "dashboard"
-      )
-    ) {
-
-      answer = `
-
-Your dashboard should give students a quick overview of their learning.
-
-Include:
-
-• Subjects
-• Today's tasks
-• Study progress
-• Completed topics
-• Current study streak
-• Upcoming goals
-• Quick access to AI Mentor
-
-Keep the first version simple and clean.
-
-      `.trim();
-
-    }
-
-
-    /*
-    ================================================
-    PROGRESS
-    ================================================
-    */
-
-    else if (
-      lowerQuestion.includes(
-        "progress"
-      ) ||
-      lowerQuestion.includes(
-        "tracking"
-      )
-    ) {
-
-      answer = `
-
-For progress tracking, start with:
-
-• Completed topics
-• Total topics
-• Study sessions
-• Completed tasks
-• Progress percentage
-
-You can store this information in Local Storage for the hackathon MVP.
-
-A database can be added later.
-
-      `.trim();
-
-    }
-
-
-    /*
-    ================================================
-    CURRENT PROJECT
-    ================================================
-    */
-
-    else if (
-      lowerQuestion.includes(
-        "project"
-      ) ||
-      lowerQuestion.includes(
-        "idea"
-      )
-    ) {
-
-      answer = `
-
-Your current project is:
-
-${projectTitle}
-
-Project idea:
-
-${projectIdea}
-
-The best next step is to turn the blueprint into a working MVP.
-
-Start with the dashboard, then implement the core feature, then connect the AI Mentor and progress tracking.
-
-      `.trim();
-
-    }
-
-
-    /*
-    ================================================
-    DEFAULT
-    ================================================
-    */
-
-    else {
-
-      answer = `
-
-For ${projectTitle}, I recommend breaking your idea into small, testable features.
-
-Your next steps are:
-
-1. Build the dashboard.
-2. Implement one core feature.
-3. Test it.
-4. Add the AI Mentor.
-5. Add progress tracking.
-6. Polish the UI.
-
-You can ask me things like:
-
-• What should I build first?
-• What features should I add?
-• Which technology should I use?
-• How can I improve it for a hackathon?
-• How should I debug this?
-
-      `.trim();
-
-    }
-
-
-    /*
-    ================================================
-    LOG
-    ================================================
-    */
+    console.log("");
+    console.log("========================================");
+    console.log("AI MENTOR REQUEST");
+    console.log("========================================");
+    console.log("Project:", projectTitle);
+    console.log("Question:", cleanQuestion);
 
     console.log(
-      "Mentor question:",
-      cleanQuestion
+      "Features:",
+      projectFeatures.map(
+        (_, index) =>
+          getFeatureTitle(index)
+      )
     );
 
+    console.log(
+      "Roadmap:",
+      projectRoadmap.map(
+        (_, index) =>
+          getRoadmapTitle(index)
+      )
+    );
+
+    console.log("========================================");
+    console.log("");
 
     /*
     ================================================
@@ -1428,33 +1550,41 @@ You can ask me things like:
     */
 
     return res.status(200).json({
-
       success: true,
+
+      question: cleanQuestion,
 
       answer,
 
+      project: {
+        title: projectTitle,
+
+        idea: projectIdea,
+
+        features:
+          projectFeatures,
+
+        roadmap:
+          projectRoadmap,
+
+        techStack:
+          projectTechStack,
+      },
     });
 
   } catch (error) {
-
     console.error(
       "Mentor error:",
       error
     );
 
     return res.status(500).json({
-
       success: false,
-
       error:
         "Failed to generate mentor response.",
-
     });
-
   }
-
 });
-
 
 /*
 ==================================================
@@ -1462,19 +1592,16 @@ You can ask me things like:
 ==================================================
 */
 
-app.use((req, res) => {
+app.use(
+  (req, res) => {
+    res.status(404).json({
+      success: false,
 
-  res.status(404).json({
-
-    success: false,
-
-    error:
-      `Route ${req.method} ${req.originalUrl} not found.`,
-
-  });
-
-});
-
+      error:
+        `Route ${req.method} ${req.originalUrl} not found.`,
+    });
+  }
+);
 
 /*
 ==================================================
@@ -1483,25 +1610,25 @@ GLOBAL ERROR HANDLER
 */
 
 app.use(
-  (error, req, res, next) => {
-
+  (
+    error,
+    req,
+    res,
+    next
+  ) => {
     console.error(
       "Server error:",
       error
     );
 
     res.status(500).json({
-
       success: false,
 
       error:
         "Internal server error.",
-
     });
-
   }
 );
-
 
 /*
 ==================================================
@@ -1512,14 +1639,14 @@ START SERVER
 app.listen(
   PORT,
   () => {
-
     console.log("");
+
     console.log(
       "========================================"
     );
 
     console.log(
-      "   AI PROJECT MENTOR BACKEND"
+      "       AI PROJECT MENTOR BACKEND"
     );
 
     console.log(
@@ -1547,6 +1674,5 @@ app.listen(
     );
 
     console.log("");
-
   }
 );

@@ -405,16 +405,7 @@ app.post("/api/mentor", (req, res) => {
         "First create the main interface, then implement the core feature, " +
         "and finally add advanced functionality.";
 
-    } else if (
-      lowerQuestion.includes("feature")
-    ) {
-
-      answer =
-        "Start with the most important features first. " +
-        "For an AI Study Assistant, begin with study planning, " +
-        "AI conversation, and progress tracking.";
-
-    } else if (
+    }  else if (
       lowerQuestion.includes("technology") ||
       lowerQuestion.includes("tech stack")
     ) {

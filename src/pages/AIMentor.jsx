@@ -14,17 +14,24 @@ function AIMentor({ project }) {
   const [loading, setLoading] = useState(false);
 
   // ==================================================
-  // SEND MESSAGE TO BACKEND
+  // SEND MESSAGE
   // ==================================================
 
-  const handleSend = async () => {
-    const userMessage = message.trim();
+  const handleSend = async (customMessage = null) => {
+    const userMessage = (
+      customMessage !== null
+        ? customMessage
+        : message
+    ).trim();
 
     if (!userMessage || loading) {
       return;
     }
 
-    // Add user's message to chat
+    // ==================================================
+    // ADD USER MESSAGE
+    // ==================================================
+
     setMessages((previousMessages) => [
       ...previousMessages,
       {
@@ -37,6 +44,49 @@ function AIMentor({ project }) {
     setLoading(true);
 
     try {
+      // ==================================================
+      // DEBUG PROJECT CONTEXT
+      // ==================================================
+
+      console.log(
+        "========================================"
+      );
+
+      console.log(
+        "MENTOR PROJECT CONTEXT:"
+      );
+
+      console.log(project);
+
+      console.log(
+        "PROJECT TITLE:",
+        project?.title
+      );
+
+      console.log(
+        "PROJECT IDEA:",
+        project?.idea
+      );
+
+      console.log(
+        "PROJECT FEATURES:",
+        project?.features
+      );
+
+      console.log(
+        "PROJECT ROADMAP:",
+        project?.roadmap
+      );
+
+      console.log(
+        "PROJECT TECH STACK:",
+        project?.techStack
+      );
+
+      console.log(
+        "========================================"
+      );
+
       // ==================================================
       // CALL BACKEND
       // ==================================================
@@ -58,9 +108,16 @@ function AIMentor({ project }) {
         }
       );
 
+      // ==================================================
+      // READ BACKEND RESPONSE
+      // ==================================================
+
       const data = await response.json();
 
-      console.log("MENTOR RESPONSE:", data);
+      console.log(
+        "MENTOR RESPONSE:",
+        data
+      );
 
       // ==================================================
       // ERROR CHECK
@@ -68,18 +125,20 @@ function AIMentor({ project }) {
 
       if (!response.ok) {
         throw new Error(
-          data.error || "Failed to get mentor response."
+          data.error ||
+            "Failed to get mentor response."
         );
       }
 
       // ==================================================
-      // ADD MENTOR RESPONSE
+      // ADD AI RESPONSE
       // ==================================================
 
       setMessages((previousMessages) => [
         ...previousMessages,
         {
           role: "assistant",
+
           text:
             data.answer ||
             "I couldn't generate a response.",
@@ -92,12 +151,17 @@ function AIMentor({ project }) {
         error
       );
 
+      // ==================================================
+      // ERROR MESSAGE
+      // ==================================================
+
       setMessages((previousMessages) => [
         ...previousMessages,
         {
           role: "assistant",
+
           text:
-            "Sorry, I couldn't connect to the AI Mentor backend. Make sure your Node.js server is running on port 5000.",
+            "Sorry, I couldn't connect to the AI Mentor backend. Make sure the Node.js server is running on port 5000.",
         },
       ]);
 
@@ -105,7 +169,6 @@ function AIMentor({ project }) {
       setLoading(false);
     }
   };
-
 
   // ==================================================
   // ENTER KEY
@@ -117,10 +180,10 @@ function AIMentor({ project }) {
       !event.shiftKey
     ) {
       event.preventDefault();
+
       handleSend();
     }
   };
-
 
   // ==================================================
   // QUICK QUESTIONS
@@ -129,10 +192,46 @@ function AIMentor({ project }) {
   const quickQuestions = [
     "How should I start this project?",
     "What features should I build first?",
+    "What should I build after the dashboard?",
     "Which technology should I use?",
+    "What is my current project?",
+    "What is my roadmap?",
     "How can I make this project better?",
   ];
 
+  // ==================================================
+  // QUICK QUESTION
+  // ==================================================
+
+  const handleQuickQuestion = (question) => {
+    if (loading) {
+      return;
+    }
+
+    handleSend(question);
+  };
+
+  // ==================================================
+  // PROJECT FEATURES
+  // ==================================================
+
+  const projectFeatures =
+    Array.isArray(project?.features)
+      ? project.features
+      : [];
+
+  // ==================================================
+  // PROJECT ROADMAP
+  // ==================================================
+
+  const projectRoadmap =
+    Array.isArray(project?.roadmap)
+      ? project.roadmap
+      : [];
+
+  // ==================================================
+  // RENDER
+  // ==================================================
 
   return (
     <div className="ai-mentor-page">
@@ -168,16 +267,96 @@ function AIMentor({ project }) {
         <div className="mentor-project-context">
 
           <div>
-            <small>PROJECT</small>
+
+            <small>
+              PROJECT
+            </small>
 
             <h3>
-              {project.title}
+              {project.title ||
+                "Your Project"}
             </h3>
+
           </div>
 
           <p>
-            {project.idea}
+            {project.idea ||
+              "No project idea available."}
           </p>
+
+        </div>
+      )}
+
+
+      {/* ==================================================
+          PROJECT FEATURES
+      ================================================== */}
+
+      {projectFeatures.length > 0 && (
+        <div className="mentor-project-features">
+
+          <small>
+            CURRENT FEATURES
+          </small>
+
+          <div>
+
+            {projectFeatures.map(
+              (feature, index) => {
+
+                const featureName =
+                  feature?.title ||
+                  feature?.name ||
+                  `Feature ${index + 1}`;
+
+                return (
+                  <span
+                    key={`${featureName}-${index}`}
+                  >
+                    {featureName}
+                  </span>
+                );
+              }
+            )}
+
+          </div>
+
+        </div>
+      )}
+
+
+      {/* ==================================================
+          PROJECT ROADMAP
+      ================================================== */}
+
+      {projectRoadmap.length > 0 && (
+        <div className="mentor-project-roadmap">
+
+          <small>
+            ROADMAP
+          </small>
+
+          <div>
+
+            {projectRoadmap.map(
+              (phase, index) => {
+
+                const phaseName =
+                  phase?.title ||
+                  phase?.name ||
+                  `Phase ${index + 1}`;
+
+                return (
+                  <span
+                    key={`${phaseName}-${index}`}
+                  >
+                    {phaseName}
+                  </span>
+                );
+              }
+            )}
+
+          </div>
 
         </div>
       )}
@@ -207,18 +386,31 @@ function AIMentor({ project }) {
                 }
               >
 
+                {/* ==================================================
+                    AVATAR
+                ================================================== */}
+
                 <div className="mentor-avatar">
+
                   {item.role === "user"
                     ? "👤"
                     : "✦"}
+
                 </div>
+
+
+                {/* ==================================================
+                    MESSAGE CONTENT
+                ================================================== */}
 
                 <div className="mentor-message-content">
 
                   <span className="mentor-message-name">
+
                     {item.role === "user"
                       ? "You"
                       : "AI Mentor"}
+
                   </span>
 
                   <p>
@@ -234,7 +426,7 @@ function AIMentor({ project }) {
 
 
           {/* ==================================================
-              LOADING
+              LOADING MESSAGE
           ================================================== */}
 
           {loading && (
@@ -282,7 +474,9 @@ function AIMentor({ project }) {
                   type="button"
                   disabled={loading}
                   onClick={() =>
-                    setMessage(question)
+                    handleQuickQuestion(
+                      question
+                    )
                   }
                 >
                   {question}
@@ -297,7 +491,7 @@ function AIMentor({ project }) {
 
 
         {/* ==================================================
-            INPUT
+            INPUT AREA
         ================================================== */}
 
         <div className="mentor-input-area">
@@ -305,7 +499,9 @@ function AIMentor({ project }) {
           <textarea
             value={message}
             onChange={(event) =>
-              setMessage(event.target.value)
+              setMessage(
+                event.target.value
+              )
             }
             onKeyDown={handleKeyDown}
             placeholder="Ask your AI mentor anything..."
@@ -315,7 +511,9 @@ function AIMentor({ project }) {
 
           <button
             type="button"
-            onClick={handleSend}
+            onClick={() =>
+              handleSend()
+            }
             disabled={
               loading ||
               !message.trim()
@@ -329,8 +527,14 @@ function AIMentor({ project }) {
 
         </div>
 
+
+        {/* ==================================================
+            INPUT HINT
+        ================================================== */}
+
         <p className="mentor-input-hint">
-          Press Enter to send • Shift + Enter for a new line
+          Press Enter to send • Shift + Enter
+          for a new line
         </p>
 
       </div>
