@@ -555,33 +555,32 @@ Open the address shown in your terminal.
 ### Landing Page
 The entry point — introduces the platform and starts the *Project Idea → Blueprint → Dashboard* journey.
 
-![Landing Page](landing-page.png)
+![Landing Page](LandingPage.png)
 
 ### Project Builder
 Where users describe their idea, pick a category, and set their experience level.
 
-![Project Builder](project-builder.png)
+![Project Builder](ProjectBuilder.png)
 
 ### AI-Generated Blueprint — Development Roadmap
 The AI breaks the idea into a clear, numbered set of build phases.
 
-![AI Blueprint](ai-blueprint.png)
+![AI Blueprint](AIBlueprint.png)
 
 ### Project Dashboard
 The central workspace showing project overview, tags, and live progress.
 
-![Project Dashboard](project-dashboard.png)
+![Project Dashboard](ProjectDashboard.png)
 
 ### Phase Workspace
 Focused, checklist-driven views for working through the roadmap one phase at a time — including smart "what to do next" suggestions.
 
-![Phase Workspace — Suggestions](phase-workspace-1.png)
-![Phase Workspace — Roadmap Checklist](phase-workspace-2.png)
+![Phase Workspace](PhaseWorkspace.png)
 
 ### AI Mentor
-A project-aware chat interface that answers questions about features, roadmap, and technology choices.
+The AI Mentor interface for project-aware development guidance.
 
-![AI Mentor](ai-mentor.png)
+![AI Mentor](AIMentor.png)
 
 ---
 
