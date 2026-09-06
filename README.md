@@ -242,25 +242,50 @@ This allows responses to be relevant to the project rather than completely gener
 
 ---
 
-## 📸 Screenshots
-
-Screenshots of the application will be added here.
+#### 📸 Screenshots
 
 ### 🏠 Project Builder
 
-*Add application screenshot here.*
+The starting point where users describe their project idea and generate a personalized project blueprint.
 
-### 📋 Project Blueprint
+![Project Builder](public/project-builder.png)
 
-*Add application screenshot here.*
+### 📋 Project Blueprint — Overview
 
-### 🤖 AI Mentor
+The generated blueprint organizes the project problem, solution, target users, and core features.
 
-*Add application screenshot here.*
+![Project Blueprint Overview](public/project-blueprint-overview.png)
+
+### 🗺️ Project Blueprint — Development Roadmap
+
+A structured development roadmap breaks the project into manageable implementation phases.
+
+![Project Blueprint Roadmap](public/project-blueprint-roadmap.png)
+
+### 🛠️ Project Blueprint — Tech Stack
+
+The blueprint recommends a technology stack aligned with the project's requirements.
+
+![Project Blueprint Tech Stack](public/project-blueprint-tech-stack.png)
+
+### 🤖 AI Project Mentor
+
+Users can ask project-specific questions and receive actionable development guidance.
+
+![AI Mentor](public/ai-mentor.png)
 
 ### 📊 Project Dashboard
 
-*Add application screenshot here.*
+The dashboard provides a central workspace for following the project's development roadmap.
+
+![Project Dashboard](public/project-dashboard.png)
+
+### 📈 Progress Tracking
+
+Completed roadmap phases are tracked to help users monitor their development progress.
+
+![Project Dashboard Progress](public/project-dashboard-progress.png)
+
 
 ---
 
