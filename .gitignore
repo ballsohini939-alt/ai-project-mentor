@@ -23,6 +23,12 @@ dist-ssr
 *.sln
 *.sw?
 
+# Operating system files
+Thumbs.db
+
+# Optional local development files
+.DS_Store
+
 # Environment variables
 .env
 .env.*
