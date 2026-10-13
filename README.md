@@ -160,54 +160,77 @@ ai-project-mentor/
 
 ## ⚙️ Getting Started
 
+Follow these steps to run AI Project Mentor locally.
+
 ### Prerequisites
 
-Make sure you have installed:
+Install the following tools before starting:
 
-* Node.js
-* npm
-* Git
+* [Node.js](https://nodejs.org/) — includes npm.
+* [Git](https://git-scm.com/) — to clone the repository.
 
-### 1. Clone the repository
+Verify your installations:
+
+```bash
+node --version
+npm --version
+git --version
+```
+
+### 1. Clone the Repository
+
+Open a terminal and run:
 
 ```bash
 git clone https://github.com/ballsohini939-alt/ai-project-mentor.git
-```
-
-### 2. Move into the project directory
-
-```bash
 cd ai-project-mentor
 ```
 
-### 3. Install dependencies
+### 2. Install Dependencies
+
+Install the project dependencies from the repository root:
 
 ```bash
 npm install
 ```
 
-### 4. Start the backend
+Wait for the installation to finish before starting either server.
+
+### 3. Start the Backend
+
+In the first terminal, run:
 
 ```bash
 npm run server
 ```
 
-### 5. Start the frontend
+The backend starts on port `5000`.
 
-Open another terminal and run:
+Keep this terminal open while using the application.
+
+### 4. Start the Frontend
+
+Open a **second terminal** in the same project directory and run:
 
 ```bash
 npm run dev
 ```
 
-### 6. Open the application
+Vite will display the local development URL in the terminal. Open that address in your browser.
 
-Vite will provide a local development URL, usually:
+The default Vite address is usually `http://localhost:5173`.
 
-```text
-http://localhost:5173
-```
+### 5. Environment Configuration
 
+The current backend supports a testing mode that does not require an AI API key.
+
+You can run the application locally without purchasing an API subscription. If you later configure an external AI service, follow the backend's actual environment-variable requirements.
+
+**Security note:** Never commit API keys, credentials, or other secrets to GitHub.
+
+### 6. Stop the Application
+
+When you finish testing, press `Ctrl + C` in each terminal to stop the frontend and backend.
 ---
 
 ## 🔌 API Endpoints
